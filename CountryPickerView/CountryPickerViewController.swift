@@ -36,6 +36,8 @@ public class CountryPickerViewController: UITableViewController {
         prepareTableItems()
         prepareNavItem()
         prepareSearchBar()
+        
+        
     }
    
 }
@@ -82,6 +84,12 @@ extension CountryPickerViewController {
             closeButton.action = #selector(close)
             navigationItem.leftBarButtonItem = closeButton
         }
+        
+        navigationController?.navigationBar.barTintColor = dataSource.navBarBackgroundColor
+        navigationController?.navigationBar.tintColor = dataSource.navBarTintColor
+        navigationController?.navigationBar.titleTextAttributes = nil
+        
+        
     }
     
     func prepareSearchBar() {
@@ -156,6 +164,8 @@ extension CountryPickerViewController {
         cell.contentView.subviews.forEach { (view) in
             view.removeFromSuperview()
         }
+        cell.accessoryView = nil
+        
         cell.contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leftAnchor.constraint(equalTo: cell.leftAnchor, constant: 10).isActive = true
@@ -168,9 +178,11 @@ extension CountryPickerViewController {
         let countryNameLabel = UILabel()
         countryNameLabel.text = country.localizedName(dataSource.localeForCountryNameInList) ?? country.name
         countryNameLabel.textColor = dataSource.countryLabelColor
+        countryNameLabel.font = dataSource.countryLabelFont
         let countryCodeLabel = UILabel()
         countryCodeLabel.text = "(\(country.phoneCode))"
         countryCodeLabel.textColor = dataSource.countryCodeColor
+        countryCodeLabel.font = dataSource.countryCodeFont
         stackView.axis = .horizontal
         stackView.addArrangedSubview(flagLabel)
         stackView.addArrangedSubview(countryNameLabel)
@@ -191,11 +203,8 @@ extension CountryPickerViewController {
             }
         }
         
-        
-        
-        
-
         cell.separatorInset = dataSource.seperatorInset
+        
         return cell
     }
     
@@ -203,7 +212,24 @@ extension CountryPickerViewController {
         return isSearchMode ? nil : sectionsTitles[section]
     }
     
+//    override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let returnedView = UIView()
+//        returnedView.backgroundColor = .green
+//
+//        let label = UILabel()
+//        label.text = sectionsTitles[section]
+//        label.sizeToFit()
+//        returnedView.addSubview(label)
+//
+//        return returnedView
+//    }
+    
+    
     override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        if !dataSource.showIndex {
+            return nil
+        }
+        
         if isSearchMode {
             return nil
         } else {
@@ -228,7 +254,12 @@ extension CountryPickerViewController {
             if let color = dataSource.sectionTitleLabelColor {
                 header.textLabel?.textColor = color
             }
+            if let backgroundColor = dataSource.sectionTitleBackgroundColor{
+                header.contentView.backgroundColor = backgroundColor
+            }
         }
+        
+
     }
     
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -431,6 +462,22 @@ class CountryPickerViewDataSourceInternal: CountryPickerViewDataSource {
     
     var selectedCountryCodeColor: UIColor{
         return view.dataSource?.selectedCountryCodeColor(in: view) ?? selectedCountryCodeColor(in: view)
+    }
+    
+    var showIndex: Bool{
+        return view.dataSource?.showIndex(in: view) ?? showIndex(in: view)
+    }
+    
+    var sectionTitleBackgroundColor: UIColor?{
+        return view.dataSource?.sectionTitleBackgroundColor(in: view)
+    }
+    
+    var navBarBackgroundColor: UIColor?{
+        return view.dataSource?.navBarTintColor(in: view)
+    }
+    
+    var navBarTintColor: UIColor?{
+        return view.dataSource?.navBarTintColor(in: view)
     }
     
     

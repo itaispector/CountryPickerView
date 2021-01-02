@@ -43,6 +43,8 @@ public protocol CountryPickerViewDataSource: class {
     /// The desired text color for the section title labels on the list.
     func sectionTitleLabelColor(in countryPickerView: CountryPickerView) -> UIColor?
     
+    func sectionTitleBackgroundColor(in countryPickerView: CountryPickerView) -> UIColor?
+    
     /// The desired font for the cell labels on the list. Can be used to configure the text size.
     /// Default value is UIFont.systemFont(ofSize: 17)
     func cellLabelFont(in countryPickerView: CountryPickerView) -> UIFont
@@ -104,7 +106,12 @@ public protocol CountryPickerViewDataSource: class {
     
     /// The desired text color for the country names on the list.
     func selectedCountryCodeColor(in countryPickerView: CountryPickerView) -> UIColor
+    
+    func showIndex(in countryPickerView: CountryPickerView) -> Bool
 
+    func navBarBackgroundColor(in countryPickerView: CountryPickerView) -> UIColor?
+    
+    func navBarTintColor(in countryPickerView: CountryPickerView) -> UIColor?
 
 }
 
@@ -128,6 +135,10 @@ public extension CountryPickerViewDataSource {
     }
 
     func sectionTitleLabelColor(in countryPickerView: CountryPickerView) -> UIColor? {
+        return nil
+    }
+    
+    func sectionTitleBackgroundColor(in countryPickerView: CountryPickerView) -> UIColor?{
         return nil
     }
     
@@ -214,6 +225,18 @@ public extension CountryPickerViewDataSource {
     /// The desired text color for the country names on the list.
     func selectedCountryCodeColor(in countryPickerView: CountryPickerView) -> UIColor{
         return UIColor(red: 0.412, green: 0.632, blue: 0.988, alpha: 1)
+    }
+    
+    func showIndex(in countryPickerView: CountryPickerView) -> Bool{
+        return true
+    }
+    
+    func navBarBackgroundColor(in countryPickerView: CountryPickerView) -> UIColor?{
+        return nil
+    }
+    
+    func navBarTintColor(in countryPickerView: CountryPickerView) -> UIColor?{
+        return nil
     }
     
     

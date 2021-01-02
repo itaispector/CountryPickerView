@@ -160,6 +160,10 @@ extension DemoViewController: CountryPickerViewDataSource {
     func showCountryCodeInList(in countryPickerView: CountryPickerView) -> Bool {
        return countryPickerView.tag == cpvMain.tag && showCountryCodeInList.isOn
     }
+    
+    func showIndex(in countryPickerView: CountryPickerView) -> Bool{
+        return false
+    }
 }
 
 
