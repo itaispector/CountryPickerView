@@ -82,6 +82,30 @@ public protocol CountryPickerViewDataSource: class {
     
     /// An array of countries you wish to exclude from the list of countries.
     func excludedCountries(in countryPickerView: CountryPickerView) -> [Country]
+    
+    /// Cell row seperator inset
+    func seperatorInset(in countryPickerView: CountryPickerView) -> UIEdgeInsets
+    
+    func accessoryView(in countryPickerView: CountryPickerView) -> UIView?
+    
+    func countryLabelFont(in countryPickerView: CountryPickerView) -> UIFont
+    
+    /// The desired text color for the country names on the list.
+    func countryLabelColor(in countryPickerView: CountryPickerView) -> UIColor
+    
+    func countryCodeFont(in countryPickerView: CountryPickerView) -> UIFont
+    
+    /// The desired text color for the country names on the list.
+    func countryCodeColor(in countryPickerView: CountryPickerView) -> UIColor
+
+    /// The desired text color for the country names on the list.
+    func selectedCountryLabelColor(in countryPickerView: CountryPickerView) -> UIColor
+    
+    
+    /// The desired text color for the country names on the list.
+    func selectedCountryCodeColor(in countryPickerView: CountryPickerView) -> UIColor
+
+
 }
 
 // MARK:- CountryPickerViewDataSource default implementations
@@ -154,6 +178,45 @@ public extension CountryPickerViewDataSource {
     func excludedCountries(in countryPickerView: CountryPickerView) -> [Country] {
         return []
     }
+    
+    func seperatorInset(in countryPickerView: CountryPickerView) -> UIEdgeInsets {
+        return .zero
+    }
+    
+    func accessoryView(in countryPickerView: CountryPickerView) -> UIView?{
+        return nil
+    }
+    
+    func countryLabelFont(in countryPickerView: CountryPickerView) -> UIFont{
+        return UIFont.systemFont(ofSize: 17)
+    }
+    
+    /// The desired text color for the country names on the list.
+    func countryLabelColor(in countryPickerView: CountryPickerView) -> UIColor{
+        return .black
+    }
+    
+    func countryCodeFont(in countryPickerView: CountryPickerView) -> UIFont{
+        return UIFont.systemFont(ofSize: 17)
+    }
+    
+    /// The desired text color for the country names on the list.
+    func countryCodeColor(in countryPickerView: CountryPickerView) -> UIColor{
+        return .gray
+    }
+    
+    /// The desired text color for the country names on the list.
+    func selectedCountryLabelColor(in countryPickerView: CountryPickerView) -> UIColor{
+        return UIColor(red: 0.075, green: 0.42, blue: 0.98, alpha: 1)
+    }
+    
+    
+    /// The desired text color for the country names on the list.
+    func selectedCountryCodeColor(in countryPickerView: CountryPickerView) -> UIColor{
+        return UIColor(red: 0.412, green: 0.632, blue: 0.988, alpha: 1)
+    }
+    
+    
 }
 
 

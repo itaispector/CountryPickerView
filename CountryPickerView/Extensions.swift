@@ -45,3 +45,19 @@ extension UINavigationController {
         }
     }
 }
+
+extension String {
+    static func emojiFlagFromCode(capitalCode: String) -> String? {
+        guard Locale.isoRegionCodes.contains(capitalCode) else {
+            return nil
+        }
+        var flagString = ""
+        for s in capitalCode.unicodeScalars {
+            guard let scalar = UnicodeScalar(127397 + s.value) else {
+                continue
+            }
+            flagString.append(String(scalar))
+        }
+        return flagString
+    }
+}

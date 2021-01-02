@@ -129,29 +129,73 @@ extension CountryPickerViewController {
         let country = isSearchMode ? searchResults[indexPath.row]
             : countries[sectionsTitles[indexPath.section]]![indexPath.row]
 
-        var name = country.localizedName(dataSource.localeForCountryNameInList) ?? country.name
-        if dataSource.showCountryCodeInList {
-            name = "\(name) (\(country.code))"
-        }
-        if dataSource.showPhoneCodeInList {
-            name = "\(name) (\(country.phoneCode))"
-        }
-        cell.imageView?.image = country.flag
+//        var name = country.localizedName(dataSource.localeForCountryNameInList) ?? country.name
+//        if dataSource.showCountryCodeInList {
+//            name = "\(name) (\(country.code))"
+//        }
+//        if dataSource.showPhoneCodeInList {
+//            name = "\(name) (\(country.phoneCode))"
+//        }
+//        cell.imageView?.image = country.flag
+//
+//        cell.flgSize = dataSource.cellImageViewSize
+//        cell.imageView?.clipsToBounds = true
+//
+//        cell.imageView?.layer.cornerRadius = dataSource.cellImageViewCornerRadius
+//        cell.imageView?.layer.masksToBounds = true
         
-        cell.flgSize = dataSource.cellImageViewSize
-        cell.imageView?.clipsToBounds = true
+        
+//        cell.contentView
+//        cell.textLabel?.text = name
+//        cell.textLabel?.font = dataSource.cellLabelFont
+//        if let color = dataSource.cellLabelColor {
+//            cell.textLabel?.textColor = color
+//        }
+        
+        let stackView = UIStackView()
+        cell.contentView.subviews.forEach { (view) in
+            view.removeFromSuperview()
+        }
+        cell.contentView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.leftAnchor.constraint(equalTo: cell.leftAnchor, constant: 10).isActive = true
+        stackView.topAnchor.constraint(equalTo: cell.topAnchor, constant: 10).isActive = true
+        stackView.rightAnchor.constraint(equalTo: cell.rightAnchor, constant: -10).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: cell.bottomAnchor, constant: -10).isActive = true
+        let flagLabel = UILabel()
+        flagLabel.font = UIFont.systemFont(ofSize: 30.0)
+        flagLabel.text = String.emojiFlagFromCode(capitalCode: country.code)
+        let countryNameLabel = UILabel()
+        countryNameLabel.text = country.localizedName(dataSource.localeForCountryNameInList) ?? country.name
+        countryNameLabel.textColor = dataSource.countryLabelColor
+        let countryCodeLabel = UILabel()
+        countryCodeLabel.text = "(\(country.phoneCode))"
+        countryCodeLabel.textColor = dataSource.countryCodeColor
+        stackView.axis = .horizontal
+        stackView.addArrangedSubview(flagLabel)
+        stackView.addArrangedSubview(countryNameLabel)
+        stackView.addArrangedSubview(countryCodeLabel)
+        stackView.addArrangedSubview(UIView())
+        stackView.spacing = 16.0
+        
+        
+        let isSelected = country == countryPickerView.selectedCountry
+        if isSelected {
+            countryNameLabel.textColor = dataSource.selectedCountryLabelColor
+            countryCodeLabel.textColor = dataSource.selectedCountryCodeColor
+            if dataSource.accessoryView == nil{
+                cell.accessoryType = isSelected &&
+                    dataSource.showCheckmarkInList ? .checkmark : .none
+            }else{
+                cell.accessoryView = isSelected ? dataSource.accessoryView : nil
+            }
+        }
+        
+        
+        
+        
 
-        cell.imageView?.layer.cornerRadius = dataSource.cellImageViewCornerRadius
-        cell.imageView?.layer.masksToBounds = true
-        
-        cell.textLabel?.text = name
-        cell.textLabel?.font = dataSource.cellLabelFont
-        if let color = dataSource.cellLabelColor {
-            cell.textLabel?.textColor = color
-        }
-        cell.accessoryType = country == countryPickerView.selectedCountry &&
-            dataSource.showCheckmarkInList ? .checkmark : .none
-        cell.separatorInset = .zero
+        cell.separatorInset = dataSource.seperatorInset
         return cell
     }
     
@@ -265,13 +309,14 @@ extension CountryPickerViewController: UISearchControllerDelegate {
 // MARK:- CountryTableViewCell.
 class CountryTableViewCell: UITableViewCell {
     
-    var flgSize: CGSize = .zero
+    /*var flgSize: CGSize = .zero
     
     override func layoutSubviews() {
         super.layoutSubviews()
         imageView?.frame.size = flgSize
         imageView?.center.y = contentView.center.y
-    }
+    }*/
+
 }
 
 
@@ -355,4 +400,40 @@ class CountryPickerViewDataSourceInternal: CountryPickerViewDataSource {
     var excludedCountries: [Country] {
         return view.dataSource?.excludedCountries(in: view) ?? excludedCountries(in: view)
     }
+    
+    var seperatorInset: UIEdgeInsets {
+        return view.dataSource?.seperatorInset(in: view) ?? seperatorInset(in: view)
+    }
+    
+    var accessoryView: UIView?{
+        return view.dataSource?.accessoryView(in: view)
+    }
+    
+    var countryLabelFont: UIFont{
+        return view.dataSource?.countryLabelFont(in: view) ?? countryLabelFont(in: view)
+    }
+    
+    var countryLabelColor: UIColor{
+        return view.dataSource?.countryLabelColor(in: view) ?? countryLabelColor(in: view)
+    }
+    
+    var countryCodeFont: UIFont{
+        return view.dataSource?.countryCodeFont(in: view) ?? countryCodeFont(in: view)
+    }
+    
+    var countryCodeColor: UIColor{
+        return view.dataSource?.countryCodeColor(in: view) ?? countryCodeColor(in: view)
+    }
+    
+    var selectedCountryLabelColor: UIColor{
+        return view.dataSource?.selectedCountryLabelColor(in: view) ?? selectedCountryLabelColor(in: view)
+    }
+    
+    var selectedCountryCodeColor: UIColor{
+        return view.dataSource?.selectedCountryCodeColor(in: view) ?? selectedCountryCodeColor(in: view)
+    }
+    
+    
+    
+
 }
